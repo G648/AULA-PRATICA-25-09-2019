@@ -1,0 +1,58 @@
+enable
+configure terminal
+hostname RT-01
+banner motd "ACESSO PARA O T.I"
+enable secret SenhaEnable
+ip domain-name grupo2/3.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 10
+login local
+exit
+username MatheusL privilege 15 secret sprint3
+username kaiky privilege 15 secret sprint3
+line console 0
+password SenhadaConsole
+login
+exit
+
+service password-encryption
+interface g0/1
+no shutdown
+exit
+interface g0/1.10
+encapsulation dot1q 10
+ip address 192.168.3.1 255.255.255.128
+description GRUPO3 VLAN 10
+exit
+interface g0/1.20
+encapsulation dot1q 20
+ip address 192.168.3.129 255.255.255.224
+description GRUPO3 VLAN 20
+exit
+interface g0/1.30
+encapsulation dot1q 30
+ip address 192.168.3.161 255.255.240
+description GRUPO3 VLAN 30
+exit
+interface g0/0
+no shutdown
+exit
+interfaceg0/0.10
+encapsulation dot1q 10
+ip address 192.168.2.129 255.255.255.224
+description GRUPO2 VLAN 10
+exit
+interface g0/0.20
+encapsulation dot1q 20
+ip address 192.168.2.1 255.255.255.128
+description GRUPO2 VLAN 20
+exit
+interface g0/0.30
+encapsulation dot1q 30
+ip address 192.168.2.161 255.255.255.240
+description GRUPO2 VLAN 30
+exit
+do wr
