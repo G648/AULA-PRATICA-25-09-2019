@@ -1,0 +1,65 @@
+enable
+clock set 16:20:25 25 september 2019
+configure terminal
+hostname SW-01
+banner motd "ACESSO AUTORIZADO APENAS PARA O DEPARTAMENTO DE TI!"
+enable secret SenhaEnable
+ip domain-name grupo3.local
+crypto key generate rsa general-keys modulus 1024
+username jadisson privilege 15 secret script3
+username matheusl privilege 15 secret script3
+username matheuss privilege 15 secret script3 
+username matheusm privilege 15 secret script3 
+username guilherme privilege 15 secret script3 
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+line vty 0 15
+password SenhadaVTY
+transport input ssh
+exec-timeout 9
+login local
+exit
+vlan 10 
+name vlan1 
+exit
+vlan 20 
+name vlan2
+exit
+vlan 30
+name vlan3
+exit
+interface f0/1
+switchport mode access
+switchport access vlan 10
+exit
+interface vlan 10
+ip address 192.168.3.1 255.255.255.128
+description REDE VLAN 10
+exit
+interface f0/2 
+switchport mode access
+switchport access vlan 20
+exit
+interface vlan 20 
+ip address 192.168.3.129 255.255.255.224
+description REDE VLAN 20
+exit
+interface f0/3 
+switchport mode access
+switchport access vlan 30 
+exit
+interface vlan 30 
+ip address 192.168.3.161 255.255.255.240
+description REDE VLAN 30
+exit 
+interface gigabitEthernet 0/1
+switchport mode trunk 
+switchport trunk native vlan 99 
+switchport trunk allowed vlan 10,20,30,99
+no shutdown
+exit
+ip default-gateway 192.168.3.1
+do wr
